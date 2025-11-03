@@ -1,0 +1,20 @@
+{
+  "name": "chatgpt-on-cs",
+  "version": "1.4.4",
+  "description": "多平台智能客服，允许使用 ChatGPT 作为客服机器人",
+  "license": "AGPL-3.0",
+  "author": {
+    "name": "qiugc",
+    "email": "qiugc@users.noreply.github.com",
+    "url": "https://github.com/qiugc"
+  },
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "pnpm run rebuild && pnpm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.6"
+  }
+}
