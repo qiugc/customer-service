@@ -1,0 +1,67 @@
+[
+  {
+    "title": "用户登录功能测试",
+    "description": "验证用户能够正常登录系统",
+    "type": "functional",
+    "priority": "high",
+    "preconditions": ["用户已注册账号", "系统正常运行"],
+    "test_steps": [
+      "1. 打开登录页面",
+      "2. 输入正确的用户名和密码",
+      "3. 点击登录按钮"
+    ],
+    "expected_result": "用户成功登录并跳转到主页"
+  },
+  {
+    "title": "密码错误登录测试",
+    "description": "验证输入错误密码时的处理",
+    "type": "functional",
+    "priority": "medium",
+    "preconditions": ["用户已注册账号"],
+    "test_steps": [
+      "1. 打开登录页面",
+      "2. 输入正确用户名和错误密码",
+      "3. 点击登录按钮"
+    ],
+    "expected_result": "显示密码错误提示信息"
+  },
+  {
+    "title": "用户注册功能测试",
+    "description": "验证新用户注册流程",
+    "type": "functional",
+    "priority": "high",
+    "preconditions": ["系统正常运行"],
+    "test_steps": [
+      "1. 打开注册页面",
+      "2. 填写用户信息",
+      "3. 点击注册按钮"
+    ],
+    "expected_result": "用户注册成功并收到确认邮件"
+  },
+  {
+    "title": "页面响应时间测试",
+    "description": "验证页面加载性能",
+    "type": "performance",
+    "priority": "medium",
+    "preconditions": ["网络环境正常"],
+    "test_steps": [
+      "1. 访问主页",
+      "2. 记录页面加载时间",
+      "3. 重复测试多次"
+    ],
+    "expected_result": "页面加载时间小于3秒"
+  },
+  {
+    "title": "SQL注入安全测试",
+    "description": "验证系统对SQL注入攻击的防护",
+    "type": "security",
+    "priority": "high",
+    "preconditions": ["测试环境已隔离"],
+    "test_steps": [
+      "1. 在输入框中输入SQL注入代码",
+      "2. 提交表单",
+      "3. 观察系统响应"
+    ],
+    "expected_result": "系统拒绝恶意输入并记录日志"
+  }
+]
