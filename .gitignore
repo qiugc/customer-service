@@ -1,0 +1,8 @@
+node_modules/
+npm-temp/
+npm-6.14.17.tgz
+package-lock.json
+.DS_Store
+uploads/
+output/
+data/

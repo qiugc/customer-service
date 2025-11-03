@@ -6,7 +6,7 @@ const cors = require('cors');
 const DocumentParser = require('./src/documentParser');
 const TestCaseGenerator = require('./src/testCaseGenerator');
 const ReportGenerator = require('./src/reportGenerator');
-const Database = require('./src/database-temp');
+const Database = require('./src/database');
 const TestCaseController = require('./src/testCaseController');
 
 const app = express();

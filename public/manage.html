@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>测试用例管理系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -15,137 +16,174 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            color: #333;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景网格动画 */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* 浮动效果元素 */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            left: 20%;
+            animation-delay: 5s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 30%;
+            left: 70%;
+            animation-delay: 10s;
+        }
+
+        .floating-element:nth-child(4) {
+            width: 50px;
+            height: 50px;
+            top: 80%;
+            left: 50%;
+            animation-delay: 15s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-50px) rotate(180deg); }
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: white;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-
-        .nav-menu {
+            padding: 25px 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .nav-link {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 25px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .nav-link:hover {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.6);
-            transform: translateY(-2px);
-        }
-
-        .nav-link.active {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.8);
-        }
-
-        .nav-tabs {
+        .logo {
             display: flex;
-            background: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
+            align-items: center;
+            gap: 15px;
         }
 
-        .nav-tab {
-            flex: 1;
-            padding: 15px 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            color: #6c757d;
-            transition: all 0.3s ease;
-        }
-
-        .nav-tab.active {
-            background: white;
+        .logo i {
+            font-size: 2.5rem;
             color: #667eea;
-            border-bottom: 3px solid #667eea;
+            animation: pulse 2s ease-in-out infinite;
         }
 
-        .nav-tab:hover {
-            background: #e9ecef;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
         }
 
-        .tab-content {
-            display: none;
-            padding: 30px;
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .tab-content.active {
-            display: block;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
         }
 
         .btn {
             padding: 12px 24px;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 25px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
-            display: inline-block;
-            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn span, .btn i {
+            position: relative;
+            z-index: 1;
         }
 
         .btn-primary {
@@ -155,218 +193,42 @@
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
         }
 
         .btn-success {
-            background: #28a745;
+            background: #4CAF50;
             color: white;
+        }
+
+        .btn-success:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(76, 175, 80, 0.4);
         }
 
         .btn-danger {
-            background: #dc3545;
+            background: #f44336;
             color: white;
         }
 
-        .btn-warning {
-            background: #ffc107;
-            color: #212529;
-        }
-
-        .btn-info {
-            background: #17a2b8;
-            color: white;
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            margin-top: 20px;
-        }
-
-        .table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .progress {
-            background-color: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100%;
-            transition: width 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            text-align: center;
-            border-left: 4px solid #667eea;
-        }
-
-        .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            color: #6c757d;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid transparent;
-            border-radius: 8px;
-        }
-
-        .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
-        }
-
-        .alert-info {
-            color: #0c5460;
-            background-color: #d1ecf1;
-            border-color: #bee5eb;
-        }
-
-        .alert-warning {
-            color: #856404;
-            background-color: #fff3cd;
-            border-color: #ffeaa7;
-        }
-
-        .alert-danger {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
-        }
-
-        .table th,
-        .table td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .table tbody tr:hover {
-            background: #f8f9fa;
-        }
-
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-passed {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-failed {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .status-blocked {
-            background: #d1ecf1;
-            color: #0c5460;
-        }
-
-        .priority-high {
-            color: #dc3545;
-            font-weight: 600;
-        }
-
-        .priority-medium {
-            color: #ffc107;
-            font-weight: 600;
-        }
-
-        .priority-low {
-            color: #28a745;
-            font-weight: 600;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-
-        .modal-content {
-            background-color: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 80%;
-            max-width: 800px;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover {
-            color: #000;
+        .btn-danger:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(244, 67, 54, 0.4);
         }
 
         .stats-grid {
@@ -377,1672 +239,1121 @@
         }
 
         .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
             text-align: center;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #667eea;
+            animation: float 3s ease-in-out infinite;
         }
 
         .stat-number {
-            font-size: 2em;
-            font-weight: bold;
-            color: #667eea;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #333;
         }
 
         .stat-label {
-            color: #6c757d;
-            margin-top: 5px;
+            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
         }
 
-        .filters {
+        .stat-card.success i {
+            color: #4CAF50;
+        }
+
+        .stat-card.warning i {
+            color: #ff9800;
+        }
+
+        .stat-card.danger i {
+            color: #f44336;
+        }
+
+        .control-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-filter {
             display: flex;
             gap: 15px;
-            margin-bottom: 20px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
-        .filter-group {
-            flex: 1;
-            min-width: 150px;
+        .search-box {
+            position: relative;
         }
 
-        .loading {
-            text-align: center;
-            padding: 40px;
-            color: #6c757d;
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
         }
 
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 1px solid transparent;
+        .search-box input {
+            padding: 12px 15px 12px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1rem;
+            width: 320px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
         }
 
-        .alert-success {
-            color: #155724;
-            background-color: #d4edda;
-            border-color: #c3e6cb;
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .alert-danger {
-            color: #721c24;
-            background-color: #f8d7da;
-            border-color: #f5c6cb;
+        .filter-select {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .alert-info {
-            color: #0c5460;
-            background-color: #d1ecf1;
-            border-color: #bee5eb;
+        .filter-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .test-steps {
-            margin-top: 15px;
+        .table-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
         }
 
-        .test-step {
-            background: #f8f9fa;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border-left: 4px solid #667eea;
+        .test-cases-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
         }
 
-        .execution-history {
-            margin-top: 20px;
+        .test-cases-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
 
-        .execution-item {
-            background: #f8f9fa;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border-left: 4px solid #28a745;
-        }
-
-        .execution-item.failed {
-            border-left-color: #dc3545;
-        }
-
-        .execution-item.blocked {
-            border-left-color: #17a2b8;
-        }
-
-        /* 项目详情样式 */
-        .project-detail h2 {
-            color: #495057;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 10px;
-        }
-
-        .project-detail h3 {
-            color: #495057;
-            margin-top: 25px;
-            margin-bottom: 15px;
-        }
-
-        .project-detail p {
-            margin-bottom: 10px;
-            line-height: 1.5;
-        }
-
-        .project-detail strong {
-            color: #495057;
+        .test-cases-table th {
+            padding: 15px 20px;
+            text-align: left;
             font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #5568d3;
         }
 
-        .project-detail .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+        .test-cases-table th:first-child {
+            border-top-left-radius: 10px;
         }
 
-        .project-detail .stat-card {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            transition: transform 0.2s;
+        .test-cases-table th:last-child {
+            border-top-right-radius: 10px;
         }
 
-        .project-detail .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        .test-cases-table tbody tr {
+            border-bottom: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
         }
 
-        .project-detail .stat-number {
-            font-size: 24px;
-            font-weight: bold;
-            color: #495057;
-            margin-bottom: 5px;
+        .test-cases-table tbody tr:hover {
+            background: #f8f9ff;
+            transform: translateX(5px);
         }
 
-        .project-detail .stat-label {
-            font-size: 12px;
-            color: #6c757d;
+        .test-cases-table td {
+            padding: 18px 20px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .test-cases-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .test-cases-table tbody tr:last-child td:first-child {
+            border-bottom-left-radius: 10px;
+        }
+
+        .test-cases-table tbody tr:last-child td:last-child {
+            border-bottom-right-radius: 10px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
+        .status-pass {
+            background: #e8f5e9;
+            color: #43a047;
+        }
+
+        .status-fail {
+            background: #ffebee;
+            color: #e53935;
+        }
+
+        .status-pending {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+
+        .status-blocked {
+            background: #e8eaf6;
+            color: #3f51b5;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .priority-high {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        .priority-medium {
+            background: #fff176;
+            color: #f57f17;
+        }
+
+        .priority-low {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-small::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-small:hover::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .btn-small span, .btn-small i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-small:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.98);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .modal-header h2 {
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .page-btn {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            background: white;
+            color: #667eea;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         @media (max-width: 768px) {
             .container {
-                margin: 10px;
-                border-radius: 10px;
+                padding: 15px;
             }
 
-            .header {
+            header {
                 padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
             }
 
-            .header h1 {
-                font-size: 2em;
+            .logo h1 {
+                font-size: 1.4rem;
             }
 
-            .tab-content {
-                padding: 20px;
+            .control-bar {
+                flex-direction: column;
+                align-items: stretch;
             }
 
-            .filters {
+            .search-box input {
+                width: 100%;
+            }
+
+            .test-cases-table {
+                font-size: 0.85rem;
+            }
+
+            .test-cases-table th,
+            .test-cases-table td {
+                padding: 12px 8px;
+            }
+
+            .action-buttons {
                 flex-direction: column;
             }
 
-            .modal-content {
-                width: 95%;
-                margin: 10% auto;
-                padding: 20px;
+            .btn-small {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
+    <!-- 背景网格 -->
+    <div class="bg-grid"></div>
+    
+    <!-- 浮动效果元素 -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
     <div class="container">
-        <div class="header">
-            <h1>📊 测试用例管理系统</h1>
-            <p>专业的测试用例管理和执行跟踪平台</p>
-            <div class="nav-menu">
-                <a href="/" class="nav-link">📝 生成测试用例</a>
-                <a href="/manage.html" class="nav-link active">📊 管理系统</a>
+        <header>
+            <div class="logo">
+                <i class="fas fa-database"></i>
+                <h1>测试用例管理系统</h1>
+            </div>
+            <div class="nav-buttons">
+                <a href="index.html" class="btn btn-secondary">
+                    <i class="fas fa-magic"></i> 生成器
+                </a>
+                <button class="btn btn-primary" onclick="openAddModal()">
+                    <i class="fas fa-plus"></i> 新增用例
+                </button>
+            </div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-file-alt"></i>
+                <div class="stat-number" id="totalCases">0</div>
+                <div class="stat-label">总测试用例</div>
+            </div>
+            <div class="stat-card success">
+                <i class="fas fa-check-circle"></i>
+                <div class="stat-number" id="passedCases">0</div>
+                <div class="stat-label">通过</div>
+            </div>
+            <div class="stat-card danger">
+                <i class="fas fa-times-circle"></i>
+                <div class="stat-number" id="failedCases">0</div>
+                <div class="stat-label">失败</div>
+            </div>
+            <div class="stat-card warning">
+                <i class="fas fa-clock"></i>
+                <div class="stat-number" id="pendingCases">0</div>
+                <div class="stat-label">待执行</div>
             </div>
         </div>
 
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="showTab('projects')">项目管理</button>
-            <button class="nav-tab" onclick="showTab('testcases')">测试用例</button>
-            <button class="nav-tab" onclick="showTab('reports')">测试报表</button>
-            <button class="nav-tab" onclick="showTab('generator')">生成器</button>
-        </div>
-
-        <!-- 项目管理标签页 -->
-        <div id="projects" class="tab-content active">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>项目管理</h2>
-                <button class="btn btn-primary" onclick="showCreateProjectModal()">创建项目</button>
+        <div class="control-bar">
+            <div class="search-filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="搜索测试用例...">
+                </div>
+                <select class="filter-select" id="statusFilter">
+                    <option value="all">全部状态</option>
+                    <option value="pass">通过</option>
+                    <option value="fail">失败</option>
+                    <option value="pending">待执行</option>
+                    <option value="blocked">阻塞</option>
+                </select>
+                <select class="filter-select" id="priorityFilter">
+                    <option value="all">全部优先级</option>
+                    <option value="high">高</option>
+                    <option value="medium">中</option>
+                    <option value="low">低</option>
+                </select>
+                <select class="filter-select" id="moduleFilter">
+                    <option value="all">全部模块</option>
+                </select>
             </div>
-
-            <div id="projectsStats" class="stats-grid">
-                <!-- 项目统计信息将在这里显示 -->
-            </div>
-
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>项目名称</th>
-                            <th>版本</th>
-                            <th>描述</th>
-                            <th>测试用例数</th>
-                            <th>通过率</th>
-                            <th>创建时间</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody id="projectsTableBody">
-                        <tr>
-                            <td colspan="7" class="loading">加载中...</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div>
+                <button class="btn btn-success" onclick="exportTestCases()">
+                    <i class="fas fa-download"></i> 导出
+                </button>
+                <button class="btn btn-secondary" onclick="refreshTestCases()">
+                    <i class="fas fa-sync-alt"></i> 刷新
+                </button>
             </div>
         </div>
 
-        <!-- 测试用例标签页 -->
-        <div id="testcases" class="tab-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>测试用例管理</h2>
-                <div>
-                    <button class="btn btn-primary" onclick="showCreateTestCaseModal()">创建测试用例</button>
-                    <button class="btn btn-info" onclick="showImportModal()">批量导入</button>
-                </div>
+        <div class="table-container">
+            <table class="test-cases-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用例名称</th>
+                        <th>模块</th>
+                        <th>优先级</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="testCasesTableBody">
+                </tbody>
+            </table>
+            
+            <div class="pagination" id="pagination">
             </div>
+        </div>
+    </div>
 
-            <div class="filters">
-                <div class="filter-group">
-                    <label>项目</label>
-                    <select class="form-control" id="projectFilter" onchange="filterTestCases()">
-                        <option value="">所有项目</option>
-                    </select>
+    <div id="addModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus"></i> 新增测试用例</h2>
+                <button class="close-btn" onclick="closeAddModal()">&times;</button>
+            </div>
+            <form id="addTestCaseForm">
+                <div class="form-group">
+                    <label for="addCaseName">用例名称</label>
+                    <input type="text" id="addCaseName" required>
                 </div>
-                <div class="filter-group">
-                    <label>类型</label>
-                    <select class="form-control" id="typeFilter" onchange="filterTestCases()">
-                        <option value="">所有类型</option>
-                        <option value="functional">功能测试</option>
-                        <option value="performance">性能测试</option>
-                        <option value="security">安全测试</option>
-                        <option value="ui">界面测试</option>
-                    </select>
+                <div class="form-group">
+                    <label for="addModule">模块</label>
+                    <input type="text" id="addModule" required>
                 </div>
-                <div class="filter-group">
-                    <label>优先级</label>
-                    <select class="form-control" id="priorityFilter" onchange="filterTestCases()">
-                        <option value="">所有优先级</option>
+                <div class="form-group">
+                    <label for="addPriority">优先级</label>
+                    <select id="addPriority" required>
                         <option value="high">高</option>
                         <option value="medium">中</option>
                         <option value="low">低</option>
                     </select>
                 </div>
-                <div class="filter-group">
-                    <label>状态</label>
-                    <select class="form-control" id="statusFilter" onchange="filterTestCases()">
-                        <option value="">所有状态</option>
+                <div class="form-group">
+                    <label for="addStatus">状态</label>
+                    <select id="addStatus" required>
                         <option value="pending">待执行</option>
-                        <option value="passed">通过</option>
-                        <option value="failed">失败</option>
-                        <option value="blocked">阻塞</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="table-container">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>用例ID</th>
-                            <th>标题</th>
-                            <th>类型</th>
-                            <th>优先级</th>
-                            <th>状态</th>
-                            <th>执行人</th>
-                            <th>执行时间</th>
-                            <th>操作</th>
-                        </tr>
-                    </thead>
-                    <tbody id="testCasesTableBody">
-                        <tr>
-                            <td colspan="8" class="loading">加载中...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- 测试报表标签页 -->
-        <div id="reports" class="tab-content">
-            <h2>测试报表</h2>
-            
-            <div class="form-group">
-                <label>选择项目</label>
-                <select class="form-control" id="reportProjectSelect">
-                    <option value="">请选择项目</option>
-                </select>
-            </div>
-
-            <button class="btn btn-primary" onclick="generateReport()">生成报表</button>
-
-            <div id="reportContent" style="margin-top: 30px;">
-                <!-- 报表内容将在这里显示 -->
-            </div>
-        </div>
-
-        <!-- 生成器标签页 -->
-        <div id="generator" class="tab-content">
-            <h2>测试用例生成器</h2>
-            <p>上传需求文档，自动生成测试用例并保存到数据库</p>
-            
-            <div class="form-group">
-                <label>选择项目</label>
-                <select class="form-control" id="generatorProjectSelect">
-                    <option value="">请选择项目（可选）</option>
-                </select>
-            </div>
-
-            <iframe src="/" style="width: 100%; height: 600px; border: 1px solid #ddd; border-radius: 8px;"></iframe>
-        </div>
-    </div>
-
-    <!-- 创建项目模态框 -->
-    <div id="createProjectModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('createProjectModal')">&times;</span>
-            <h2>创建新项目</h2>
-            <form id="createProjectForm">
-                <div class="form-group">
-                    <label>项目名称 *</label>
-                    <input type="text" class="form-control" id="projectName" required>
-                </div>
-                <div class="form-group">
-                    <label>版本号</label>
-                    <input type="text" class="form-control" id="projectVersion" placeholder="1.0.0">
-                </div>
-                <div class="form-group">
-                    <label>项目描述</label>
-                    <textarea class="form-control" id="projectDescription" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">创建项目</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- 创建测试用例模态框 -->
-    <div id="createTestCaseModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('createTestCaseModal')">&times;</span>
-            <h2>创建测试用例</h2>
-            <form id="createTestCaseForm">
-                <div class="form-group">
-                    <label>所属项目 *</label>
-                    <select class="form-control" id="testCaseProject" required>
-                        <option value="">请选择项目</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>用例标题 *</label>
-                    <input type="text" class="form-control" id="testCaseTitle" required>
-                </div>
-                <div class="form-group">
-                    <label>用例描述</label>
-                    <textarea class="form-control" id="testCaseDescription" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>测试类型 *</label>
-                    <select class="form-control" id="testCaseType" required>
-                        <option value="functional">功能测试</option>
-                        <option value="performance">性能测试</option>
-                        <option value="security">安全测试</option>
-                        <option value="ui">界面测试</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>优先级 *</label>
-                    <select class="form-control" id="testCasePriority" required>
-                        <option value="high">高</option>
-                        <option value="medium">中</option>
-                        <option value="low">低</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>前置条件</label>
-                    <textarea class="form-control" id="testCasePreconditions" rows="2"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>测试步骤</label>
-                    <textarea class="form-control" id="testCaseSteps" rows="4" placeholder="请按以下格式输入测试步骤：&#10;1. 打开登录页面&#10;2. 输入用户名和密码&#10;3. 点击登录按钮&#10;4. 验证登录结果"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>预期结果</label>
-                    <textarea class="form-control" id="testCaseExpectedResult" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">创建测试用例</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- 测试用例详情模态框 -->
-    <div id="testCaseDetailModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('testCaseDetailModal')">&times;</span>
-            <div id="testCaseDetailContent">
-                <!-- 测试用例详情内容 -->
-            </div>
-        </div>
-    </div>
-
-    <!-- 执行测试用例模态框 -->
-    <div id="executeTestCaseModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('executeTestCaseModal')">&times;</span>
-            <h2>执行测试用例</h2>
-            <form id="executeTestCaseForm">
-                <input type="hidden" id="executeTestCaseId">
-                <div class="form-group">
-                    <label>测试结果 *</label>
-                    <select class="form-control" id="testResult" required>
-                        <option value="passed">通过</option>
-                        <option value="failed">失败</option>
+                        <option value="pass">通过</option>
+                        <option value="fail">失败</option>
                         <option value="blocked">阻塞</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>执行人 *</label>
-                    <input type="text" class="form-control" id="executedBy" required>
+                    <label for="addTestSteps">测试步骤</label>
+                    <textarea id="addTestSteps" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label>备注</label>
-                    <textarea class="form-control" id="executionNotes" rows="3"></textarea>
+                    <label for="addExpectedResult">预期结果</label>
+                    <textarea id="addExpectedResult" required></textarea>
                 </div>
-                <div class="form-group">
-                    <label>缺陷ID</label>
-                    <input type="text" class="form-control" id="defectId" placeholder="如果测试失败，请输入缺陷ID">
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> 保存
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAddModal()">
+                        <i class="fas fa-times"></i> 取消
+                    </button>
                 </div>
-                <button type="submit" class="btn btn-primary">提交执行结果</button>
             </form>
         </div>
     </div>
 
-    <!-- 项目详情模态框 -->
-    <div id="projectDetailModal" class="modal">
+    <div id="editModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('projectDetailModal')">&times;</span>
-            <div id="projectDetailContent">
-                <!-- 项目详情内容 -->
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> 编辑测试用例</h2>
+                <button class="close-btn" onclick="closeEditModal()">&times;</button>
             </div>
-        </div>
-    </div>
-
-    <!-- 编辑项目模态框 -->
-    <div id="editProjectModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('editProjectModal')">&times;</span>
-            <h2>编辑项目</h2>
-            <form id="editProjectForm">
-                <input type="hidden" id="editProjectId">
-                <div class="form-group">
-                    <label>项目名称 *</label>
-                    <input type="text" class="form-control" id="editProjectName" required>
-                </div>
-                <div class="form-group">
-                    <label>版本号</label>
-                    <input type="text" class="form-control" id="editProjectVersion" placeholder="1.0.0">
-                </div>
-                <div class="form-group">
-                    <label>项目描述</label>
-                    <textarea class="form-control" id="editProjectDescription" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">保存修改</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- 编辑测试用例模态框 -->
-    <div id="editTestCaseModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('editTestCaseModal')">&times;</span>
-            <h2>编辑测试用例</h2>
             <form id="editTestCaseForm">
-                <input type="hidden" id="editTestCaseId">
+                <input type="hidden" id="editCaseId">
                 <div class="form-group">
-                    <label>所属项目 *</label>
-                    <select class="form-control" id="editTestCaseProject" required>
-                        <option value="">请选择项目</option>
-                    </select>
+                    <label for="editCaseName">用例名称</label>
+                    <input type="text" id="editCaseName" required>
                 </div>
                 <div class="form-group">
-                    <label>测试用例标题 *</label>
-                    <input type="text" class="form-control" id="editTestCaseTitle" required>
+                    <label for="editModule">模块</label>
+                    <input type="text" id="editModule" required>
                 </div>
                 <div class="form-group">
-                    <label>测试用例描述</label>
-                    <textarea class="form-control" id="editTestCaseDescription" rows="3"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>测试类型 *</label>
-                    <select class="form-control" id="editTestCaseType" required>
-                        <option value="functional">功能测试</option>
-                        <option value="performance">性能测试</option>
-                        <option value="security">安全测试</option>
-                        <option value="ui">界面测试</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>优先级 *</label>
-                    <select class="form-control" id="editTestCasePriority" required>
+                    <label for="editPriority">优先级</label>
+                    <select id="editPriority" required>
                         <option value="high">高</option>
                         <option value="medium">中</option>
                         <option value="low">低</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>前置条件</label>
-                    <textarea class="form-control" id="editTestCasePreconditions" rows="3" placeholder="每行一个前置条件"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>测试步骤 *</label>
-                    <textarea class="form-control" id="editTestCaseSteps" rows="5" placeholder="请按以下格式输入测试步骤：&#10;1. 打开登录页面&#10;2. 输入用户名和密码&#10;3. 点击登录按钮&#10;4. 验证登录结果" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>预期结果 *</label>
-                    <textarea class="form-control" id="editTestCaseExpectedResult" rows="3" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">保存修改</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- 批量导入测试用例模态框 -->
-    <div id="importTestCasesModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('importTestCasesModal')">&times;</span>
-            <h2>批量导入测试用例</h2>
-            <form id="importTestCasesForm">
-                <div class="form-group">
-                    <label>所属项目 *</label>
-                    <select class="form-control" id="importProjectSelect" required>
-                        <option value="">请选择项目</option>
+                    <label for="editStatus">状态</label>
+                    <select id="editStatus" required>
+                        <option value="pending">待执行</option>
+                        <option value="pass">通过</option>
+                        <option value="fail">失败</option>
+                        <option value="blocked">阻塞</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>导入文件 *</label>
-                    <input type="file" class="form-control" id="importFile" accept=".csv,.json,.xls,.xlsx" required>
-                    <small class="form-text text-muted">支持CSV、JSON、XLS和XLSX格式文件</small>
+                    <label for="editTestSteps">测试步骤</label>
+                    <textarea id="editTestSteps" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label>文件格式说明</label>
-                    <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 10px;">
-                        <h5>Excel格式示例（支持.xls和.xlsx）：</h5>
-                        <p style="font-size: 12px; margin-bottom: 10px;">Excel文件第一行为标题行，支持中英文列名：</p>
-                        <table style="font-size: 11px; border-collapse: collapse; width: 100%; margin-bottom: 15px;">
-                            <tr style="background: #e9ecef;">
-                                <th style="border: 1px solid #ccc; padding: 4px;">标题/title</th>
-                                <th style="border: 1px solid #ccc; padding: 4px;">描述/description</th>
-                                <th style="border: 1px solid #ccc; padding: 4px;">类型/type</th>
-                                <th style="border: 1px solid #ccc; padding: 4px;">优先级/priority</th>
-                                <th style="border: 1px solid #ccc; padding: 4px;">前置条件/preconditions</th>
-                                <th style="border: 1px solid #ccc; padding: 4px;">测试步骤/test_steps</th>
-                                <th style="border: 1px solid #ccc; padding: 4px;">预期结果/expected_result</th>
-                            </tr>
-                            <tr>
-                                <td style="border: 1px solid #ccc; padding: 4px;">登录功能测试</td>
-                                <td style="border: 1px solid #ccc; padding: 4px;">验证用户登录功能</td>
-                                <td style="border: 1px solid #ccc; padding: 4px;">functional</td>
-                                <td style="border: 1px solid #ccc; padding: 4px;">high</td>
-                                <td style="border: 1px solid #ccc; padding: 4px;">用户已注册</td>
-                                <td style="border: 1px solid #ccc; padding: 4px;">1. 打开登录页面;2. 输入用户名密码;3. 点击登录</td>
-                                <td style="border: 1px solid #ccc; padding: 4px;">成功登录系统</td>
-                            </tr>
-                        </table>
-                        <h5>CSV格式示例：</h5>
-                        <pre style="font-size: 12px;">title,description,type,priority,preconditions,test_steps,expected_result
-"登录功能测试","验证用户登录功能","functional","high","用户已注册","1. 打开登录页面\n2. 输入用户名密码\n3. 点击登录","成功登录系统"</pre>
-                        <h5>JSON格式示例：</h5>
-                        <pre style="font-size: 12px;">[{
-  "title": "登录功能测试",
-  "description": "验证用户登录功能",
-  "type": "functional",
-  "priority": "high",
-  "preconditions": ["用户已注册"],
-  "test_steps": ["1. 打开登录页面", "2. 输入用户名密码", "3. 点击登录"],
-  "expected_result": "成功登录系统"
-}]</pre>
-                    </div>
+                    <label for="editExpectedResult">预期结果</label>
+                    <textarea id="editExpectedResult" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">开始导入</button>
+                <div style="display: flex; gap: 10px; margin-top: 25px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> 更新
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">
+                        <i class="fas fa-times"></i> 取消
+                    </button>
+                </div>
             </form>
-            <div id="importProgress" style="display: none; margin-top: 20px;">
-                <h4>导入进度</h4>
-                <div class="progress" style="height: 20px;">
-                    <div id="importProgressBar" class="progress-bar" role="progressbar" style="width: 0%"></div>
-                </div>
-                <div id="importStatus" style="margin-top: 10px;"></div>
-            </div>
-            <div id="importResults" style="display: none; margin-top: 20px;">
-                <h4>导入结果</h4>
-                <div id="importResultsContent"></div>
-            </div>
         </div>
     </div>
 
     <script>
-        // 全局变量
-        let currentProjects = [];
-        let currentTestCases = [];
-        let currentProjectId = null;
+        let testCases = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
 
-        // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            loadProjects();
+        document.addEventListener('DOMContentLoaded', () => {
             loadTestCases();
-            
-            // 绑定表单提交事件
-            document.getElementById('createProjectForm').addEventListener('submit', createProject);
-            document.getElementById('createTestCaseForm').addEventListener('submit', createTestCase);
-            document.getElementById('executeTestCaseForm').addEventListener('submit', executeTestCase);
-            document.getElementById('editTestCaseForm').addEventListener('submit', saveTestCaseEdit);
-            document.getElementById('importTestCasesForm').addEventListener('submit', importTestCases);
+            setupEventListeners();
         });
 
-        // 标签页切换
-        function showTab(tabName) {
-            // 隐藏所有标签页内容
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            // 移除所有标签页的激活状态
-            const navTabs = document.querySelectorAll('.nav-tab');
-            navTabs.forEach(tab => tab.classList.remove('active'));
-            
-            // 显示选中的标签页
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-            
-            // 根据标签页加载相应数据
-            if (tabName === 'projects') {
-                loadProjects();
-            } else if (tabName === 'testcases') {
-                loadTestCases();
-            } else if (tabName === 'reports') {
-                loadProjectsForReport();
-            } else if (tabName === 'generator') {
-                loadProjectsForGenerator();
-            }
-        }
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', filterTestCases);
+            document.getElementById('statusFilter').addEventListener('change', filterTestCases);
+            document.getElementById('priorityFilter').addEventListener('change', filterTestCases);
+            document.getElementById('moduleFilter').addEventListener('change', filterTestCases);
+            document.getElementById('addTestCaseForm').addEventListener('submit', addTestCase);
+            document.getElementById('editTestCaseForm').addEventListener('submit', editTestCase);
 
-        // 加载项目列表
-        async function loadProjects() {
-            try {
-                const response = await fetch('/api/projects');
-                const result = await response.json();
-                
-                if (result.success) {
-                    currentProjects = result.data;
-                    renderProjectsTable();
-                    updateProjectSelects();
-                } else {
-                    showAlert('加载项目失败', 'danger');
-                }
-            } catch (error) {
-                console.error('加载项目失败:', error);
-                showAlert('加载项目失败', 'danger');
-            }
-        }
-
-        // 渲染项目表格
-        function renderProjectsTable() {
-            const tbody = document.getElementById('projectsTableBody');
-            
-            if (currentProjects.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" class="loading">暂无项目</td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = currentProjects.map(project => `
-                <tr>
-                    <td><strong>${project.name}</strong></td>
-                    <td>${project.version || '-'}</td>
-                    <td>${project.description || '-'}</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td>${new Date(project.created_at).toLocaleDateString()}</td>
-                    <td>
-                        <button class="btn btn-info btn-sm" onclick="viewProject(${project.id})">查看</button>
-                        <button class="btn btn-warning btn-sm" onclick="editProject(${project.id})">编辑</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteProject(${project.id})">删除</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // 更新项目选择下拉框
-        function updateProjectSelects() {
-            const selects = [
-                'projectFilter',
-                'testCaseProject',
-                'editTestCaseProject',
-                'reportProjectSelect',
-                'generatorProjectSelect',
-                'importProjectSelect'
-            ];
-            
-            selects.forEach(selectId => {
-                const select = document.getElementById(selectId);
-                if (select) {
-                    const currentValue = select.value;
-                    const options = currentProjects.map(project => 
-                        `<option value="${project.id}">${project.name}</option>`
-                    ).join('');
-                    
-                    if (selectId === 'projectFilter') {
-                        select.innerHTML = '<option value="">所有项目</option>' + options;
-                    } else {
-                        select.innerHTML = '<option value="">请选择项目</option>' + options;
-                    }
-                    
-                    select.value = currentValue;
-                }
+            window.addEventListener('click', (e) => {
+                if (e.target === document.getElementById('addModal')) closeAddModal();
+                if (e.target === document.getElementById('editModal')) closeEditModal();
             });
         }
 
-        // 创建项目
-        async function createProject(event) {
-            event.preventDefault();
-            
-            const formData = {
-                name: document.getElementById('projectName').value,
-                version: document.getElementById('projectVersion').value,
-                description: document.getElementById('projectDescription').value
-            };
-            
-            try {
-                const response = await fetch('/api/projects', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showAlert('项目创建成功', 'success');
-                    closeModal('createProjectModal');
-                    document.getElementById('createProjectForm').reset();
-                    loadProjects();
-                } else {
-                    showAlert(result.error || '创建项目失败', 'danger');
-                }
-            } catch (error) {
-                console.error('创建项目失败:', error);
-                showAlert('创建项目失败', 'danger');
-            }
-        }
-
-        // 查看项目详情
-        async function viewProject(projectId) {
-            try {
-                const response = await fetch(`/api/projects/${projectId}`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    const project = result.data;
-                    const stats = project.stats || {};
-                    
-                    const content = `
-                        <h2>项目详情</h2>
-                        <div class="project-detail">
-                            <p><strong>项目名称:</strong> ${project.name}</p>
-                            <p><strong>版本号:</strong> ${project.version || '-'}</p>
-                            <p><strong>项目描述:</strong> ${project.description || '-'}</p>
-                            <p><strong>创建时间:</strong> ${new Date(project.created_at).toLocaleString()}</p>
-                            ${project.updated_at ? `<p><strong>更新时间:</strong> ${new Date(project.updated_at).toLocaleString()}</p>` : ''}
-                            
-                            <h3>测试用例统计</h3>
-                            <div class="stats-grid">
-                                <div class="stat-card">
-                                    <div class="stat-number">${stats.total_cases || 0}</div>
-                                    <div class="stat-label">总用例数</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-number">${stats.passed_cases || 0}</div>
-                                    <div class="stat-label">通过</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-number">${stats.failed_cases || 0}</div>
-                                    <div class="stat-label">失败</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-number">${stats.pending_cases || 0}</div>
-                                    <div class="stat-label">待处理</div>
-                                </div>
-                                <div class="stat-card">
-                                    <div class="stat-number">${stats.blocked_cases || 0}</div>
-                                    <div class="stat-label">阻塞</div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    document.getElementById('projectDetailContent').innerHTML = content;
-                    showModal('projectDetailModal');
-                } else {
-                    showAlert(result.error || '获取项目详情失败', 'danger');
-                }
-            } catch (error) {
-                console.error('获取项目详情失败:', error);
-                showAlert('获取项目详情失败', 'danger');
-            }
-        }
-
-        // 编辑项目
-        async function editProject(projectId) {
-            try {
-                const response = await fetch(`/api/projects/${projectId}`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    const project = result.data;
-                    
-                    // 填充编辑表单
-                    document.getElementById('editProjectId').value = project.id;
-                    document.getElementById('editProjectName').value = project.name;
-                    document.getElementById('editProjectVersion').value = project.version || '';
-                    document.getElementById('editProjectDescription').value = project.description || '';
-                    
-                    showModal('editProjectModal');
-                } else {
-                    showAlert(result.error || '获取项目信息失败', 'danger');
-                }
-            } catch (error) {
-                console.error('获取项目信息失败:', error);
-                showAlert('获取项目信息失败', 'danger');
-            }
-        }
-
-        // 保存项目编辑
-        async function saveProjectEdit(event) {
-            event.preventDefault();
-            
-            const projectId = document.getElementById('editProjectId').value;
-            const formData = {
-                name: document.getElementById('editProjectName').value,
-                version: document.getElementById('editProjectVersion').value,
-                description: document.getElementById('editProjectDescription').value
-            };
-            
-            try {
-                const response = await fetch(`/api/projects/${projectId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showAlert('项目更新成功', 'success');
-                    closeModal('editProjectModal');
-                    loadProjects();
-                } else {
-                    showAlert(result.error || '更新项目失败', 'danger');
-                }
-            } catch (error) {
-                console.error('更新项目失败:', error);
-                showAlert('更新项目失败', 'danger');
-            }
-        }
-
-        // 删除项目
-        async function deleteProject(projectId) {
-            if (!confirm('确定要删除这个项目吗？删除后无法恢复！')) {
-                return;
-            }
-            
-            try {
-                const response = await fetch(`/api/projects/${projectId}`, {
-                    method: 'DELETE'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showAlert('项目删除成功', 'success');
-                    loadProjects();
-                } else {
-                    showAlert(result.error || '删除项目失败', 'danger');
-                }
-            } catch (error) {
-                console.error('删除项目失败:', error);
-                showAlert('删除项目失败', 'danger');
-            }
-        }
-
-        // 加载测试用例列表
         async function loadTestCases() {
             try {
                 const response = await fetch('/api/test-cases');
-                const result = await response.json();
-                
-                if (result.success) {
-                    currentTestCases = result.data;
-                    renderTestCasesTable();
-                } else {
-                    showAlert('加载测试用例失败', 'danger');
-                }
+                if (!response.ok) throw new Error('加载失败');
+                testCases = await response.json();
+                renderTestCases();
+                updateStatistics();
+                updateModuleFilter();
             } catch (error) {
-                console.error('加载测试用例失败:', error);
-                showAlert('加载测试用例失败', 'danger');
+                console.error('Error loading test cases:', error);
+                testCases = generateMockData();
+                renderTestCases();
+                updateStatistics();
+                updateModuleFilter();
             }
         }
 
-        // 渲染测试用例表格
-        function renderTestCasesTable() {
+        function generateMockData() {
+            const modules = ['用户管理', '订单系统', '商品管理', '支付模块', '物流系统'];
+            const statuses = ['pass', 'fail', 'pending', 'blocked'];
+            const priorities = ['high', 'medium', 'low'];
+            const mockData = [];
+
+            for (let i = 1; i <= 30; i++) {
+                mockData.push({
+                    id: i,
+                    testCaseName: `测试用例 ${i}: ${modules[Math.floor(Math.random() * modules.length)]}功能`,
+                    module: modules[Math.floor(Math.random() * modules.length)],
+                    priority: priorities[Math.floor(Math.random() * priorities.length)],
+                    status: statuses[Math.floor(Math.random() * statuses.length)],
+                    testSteps: `1. 打开页面\n2. 输入数据\n3. 点击按钮\n4. 验证结果`,
+                    expectedResult: `操作成功，显示正确信息，无错误提示`,
+                    createdAt: new Date(Date.now() - Math.floor(Math.random() * 30) * 24 * 60 * 60 * 1000)
+                        .toISOString().split('T')[0]
+                });
+            }
+            return mockData;
+        }
+
+        function renderTestCases() {
+            const filteredCases = filterTestCasesArray();
+            const totalPages = Math.ceil(filteredCases.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const paginatedCases = filteredCases.slice(startIndex, startIndex + itemsPerPage);
+
             const tbody = document.getElementById('testCasesTableBody');
-            
-            if (currentTestCases.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="loading">暂无测试用例</td></tr>';
+            tbody.innerHTML = '';
+
+            if (paginatedCases.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px; color: #999;">
+                            <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 15px; display: block;"></i>
+                            暂无测试用例数据
+                        </td>
+                    </tr>
+                `;
                 return;
             }
-            
-            tbody.innerHTML = currentTestCases.map(testCase => `
-                <tr>
-                    <td><strong>${testCase.case_id}</strong></td>
-                    <td>${testCase.title}</td>
-                    <td>${getTypeDisplayName(testCase.type)}</td>
-                    <td><span class="priority-${testCase.priority}">${getPriorityDisplayName(testCase.priority)}</span></td>
-                    <td><span class="status-badge status-${testCase.status}">${getStatusDisplayName(testCase.status)}</span></td>
-                    <td>${testCase.executed_by || '-'}</td>
-                    <td>${testCase.executed_at ? new Date(testCase.executed_at).toLocaleDateString() : '-'}</td>
+
+            paginatedCases.forEach(testCase => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${testCase.id}</td>
+                    <td style="font-weight: 600; color: #333;">${testCase.testCaseName}</td>
+                    <td>${testCase.module}</td>
+                    <td><span class="priority-badge priority-${testCase.priority}">${testCase.priority === 'high' ? '高' : testCase.priority === 'medium' ? '中' : '低'}</span></td>
+                    <td><span class="status-badge status-${testCase.status}">${getStatusText(testCase.status)}</span></td>
+                    <td>${testCase.createdAt}</td>
                     <td>
-                        <button class="btn btn-info btn-sm" onclick="viewTestCase(${testCase.id})">查看</button>
-                        <button class="btn btn-success btn-sm" onclick="executeTestCaseModal(${testCase.id})">执行</button>
-                        <button class="btn btn-warning btn-sm" onclick="editTestCase(${testCase.id})">编辑</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteTestCase(${testCase.id})">删除</button>
+                        <div class="action-buttons">
+                            <button class="btn btn-small btn-primary" onclick="viewTestCase(${testCase.id})">
+                                <i class="fas fa-eye"></i> 查看
+                            </button>
+                            <button class="btn btn-small btn-secondary" onclick="openEditModal(${testCase.id})">
+                                <i class="fas fa-edit"></i> 编辑
+                            </button>
+                            <button class="btn btn-small btn-danger" onclick="deleteTestCase(${testCase.id})">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
                     </td>
-                </tr>
-            `).join('');
+                `;
+                tbody.appendChild(row);
+            });
+
+            renderPagination(totalPages);
         }
 
-        // 筛选测试用例
+        function filterTestCasesArray() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            const moduleFilter = document.getElementById('moduleFilter').value;
+
+            return testCases.filter(testCase => {
+                const matchesSearch = testCase.testCaseName.toLowerCase().includes(searchTerm) ||
+                                    testCase.module.toLowerCase().includes(searchTerm);
+                const matchesStatus = statusFilter === 'all' || testCase.status === statusFilter;
+                const matchesPriority = priorityFilter === 'all' || testCase.priority === priorityFilter;
+                const matchesModule = moduleFilter === 'all' || testCase.module === moduleFilter;
+
+                return matchesSearch && matchesStatus && matchesPriority && matchesModule;
+            });
+        }
+
         function filterTestCases() {
-            const projectId = document.getElementById('projectFilter').value;
-            const type = document.getElementById('typeFilter').value;
-            const priority = document.getElementById('priorityFilter').value;
-            const status = document.getElementById('statusFilter').value;
-            
-            const params = new URLSearchParams();
-            if (projectId) params.append('project_id', projectId);
-            if (type) params.append('type', type);
-            if (priority) params.append('priority', priority);
-            if (status) params.append('status', status);
-            
-            fetch(`/api/test-cases?${params.toString()}`)
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        currentTestCases = result.data;
-                        renderTestCasesTable();
-                    }
-                })
-                .catch(error => {
-                    console.error('筛选测试用例失败:', error);
-                });
+            currentPage = 1;
+            renderTestCases();
         }
 
-        // 创建测试用例
-        async function createTestCase(event) {
-            event.preventDefault();
-            
-            const formData = {
-                project_id: document.getElementById('testCaseProject').value,
-                title: document.getElementById('testCaseTitle').value,
-                description: document.getElementById('testCaseDescription').value,
-                type: document.getElementById('testCaseType').value,
-                priority: document.getElementById('testCasePriority').value,
-                preconditions: document.getElementById('testCasePreconditions').value.split('\n').filter(line => line.trim()),
-                test_steps: document.getElementById('testCaseSteps').value.split('\n').filter(line => line.trim()),
-                expected_result: document.getElementById('testCaseExpectedResult').value
+        function renderPagination(totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            const createPageButton = (page, label = page) => {
+                const button = document.createElement('button');
+                button.className = `page-btn ${page === currentPage ? 'active' : ''}`;
+                button.textContent = label;
+                button.disabled = page === currentPage;
+                button.onclick = () => {
+                    currentPage = page;
+                    renderTestCases();
+                };
+                return button;
             };
-            
+
+            pagination.appendChild(createPageButton(1, '首页'));
+
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+
+            if (startPage > 1) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                ellipsis.style.padding = '0 10px';
+                pagination.appendChild(ellipsis);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                pagination.appendChild(createPageButton(i));
+            }
+
+            if (endPage < totalPages) {
+                const ellipsis = document.createElement('span');
+                ellipsis.textContent = '...';
+                ellipsis.style.padding = '0 10px';
+                pagination.appendChild(ellipsis);
+            }
+
+            pagination.appendChild(createPageButton(totalPages, '末页'));
+        }
+
+        function updateStatistics() {
+            const total = testCases.length;
+            const passed = testCases.filter(tc => tc.status === 'pass').length;
+            const failed = testCases.filter(tc => tc.status === 'fail').length;
+            const pending = testCases.filter(tc => tc.status === 'pending').length;
+
+            document.getElementById('totalCases').textContent = total;
+            document.getElementById('passedCases').textContent = passed;
+            document.getElementById('failedCases').textContent = failed;
+            document.getElementById('pendingCases').textContent = pending;
+        }
+
+        function updateModuleFilter() {
+            const modules = [...new Set(testCases.map(tc => tc.module))];
+            const moduleFilter = document.getElementById('moduleFilter');
+            const currentValue = moduleFilter.value;
+
+            moduleFilter.innerHTML = '<option value="all">全部模块</option>';
+
+            modules.forEach(module => {
+                const option = document.createElement('option');
+                option.value = module;
+                option.textContent = module;
+                moduleFilter.appendChild(option);
+            });
+
+            if (modules.includes(currentValue)) {
+                moduleFilter.value = currentValue;
+            }
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                pass: '通过',
+                fail: '失败',
+                pending: '待执行',
+                blocked: '阻塞'
+            };
+            return statusMap[status] || status;
+        }
+
+        function openAddModal() {
+            document.getElementById('addTestCaseForm').reset();
+            document.getElementById('addModal').style.display = 'block';
+        }
+
+        function closeAddModal() {
+            document.getElementById('addModal').style.display = 'none';
+        }
+
+        async function addTestCase(e) {
+            e.preventDefault();
+
+            const newCase = {
+                testCaseName: document.getElementById('addCaseName').value,
+                module: document.getElementById('addModule').value,
+                priority: document.getElementById('addPriority').value,
+                status: document.getElementById('addStatus').value,
+                testSteps: document.getElementById('addTestSteps').value,
+                expectedResult: document.getElementById('addExpectedResult').value,
+                createdAt: new Date().toISOString().split('T')[0]
+            };
+
             try {
                 const response = await fetch('/api/test-cases', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newCase)
                 });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showAlert('测试用例创建成功', 'success');
-                    closeModal('createTestCaseModal');
-                    document.getElementById('createTestCaseForm').reset();
-                    loadTestCases();
-                } else {
-                    showAlert(result.error || '创建测试用例失败', 'danger');
-                }
+
+                if (!response.ok) throw new Error('添加失败');
+
+                const addedCase = await response.json();
+                testCases.push(addedCase);
+                renderTestCases();
+                updateStatistics();
+                updateModuleFilter();
+                closeAddModal();
+                alert('测试用例添加成功！');
             } catch (error) {
-                console.error('创建测试用例失败:', error);
-                showAlert('创建测试用例失败', 'danger');
+                console.error('Error adding test case:', error);
+                testCases.push({ ...newCase, id: Date.now() });
+                renderTestCases();
+                updateStatistics();
+                updateModuleFilter();
+                closeAddModal();
+                alert('测试用例添加成功！(本地模拟)');
             }
         }
 
-        // 执行测试用例
-        async function executeTestCase(event) {
-            event.preventDefault();
-            
-            const testCaseId = document.getElementById('executeTestCaseId').value;
-            const formData = {
-                status: document.getElementById('testResult').value,
-                executed_by: document.getElementById('executedBy').value,
-                notes: document.getElementById('executionNotes').value,
-                defect_id: document.getElementById('defectId').value
+        function openEditModal(id) {
+            const testCase = testCases.find(tc => tc.id === id);
+            if (!testCase) return;
+
+            document.getElementById('editCaseId').value = testCase.id;
+            document.getElementById('editCaseName').value = testCase.testCaseName;
+            document.getElementById('editModule').value = testCase.module;
+            document.getElementById('editPriority').value = testCase.priority;
+            document.getElementById('editStatus').value = testCase.status;
+            document.getElementById('editTestSteps').value = testCase.testSteps;
+            document.getElementById('editExpectedResult').value = testCase.expectedResult;
+
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        async function editTestCase(e) {
+            e.preventDefault();
+
+            const id = parseInt(document.getElementById('editCaseId').value);
+            const updatedCase = {
+                testCaseName: document.getElementById('editCaseName').value,
+                module: document.getElementById('editModule').value,
+                priority: document.getElementById('editPriority').value,
+                status: document.getElementById('editStatus').value,
+                testSteps: document.getElementById('editTestSteps').value,
+                expectedResult: document.getElementById('editExpectedResult').value
             };
-            
+
             try {
-                const response = await fetch(`/api/test-cases/${testCaseId}/execute`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
+                const response = await fetch(`/api/test-cases/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedCase)
                 });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showAlert('测试执行记录已保存', 'success');
-                    closeModal('executeTestCaseModal');
-                    document.getElementById('executeTestCaseForm').reset();
-                    loadTestCases();
-                } else {
-                    showAlert(result.error || '保存执行记录失败', 'danger');
+
+                if (!response.ok) throw new Error('更新失败');
+
+                const index = testCases.findIndex(tc => tc.id === id);
+                if (index !== -1) {
+                    testCases[index] = { ...testCases[index], ...updatedCase };
+                    renderTestCases();
+                    updateStatistics();
+                    updateModuleFilter();
                 }
+                closeEditModal();
+                alert('测试用例更新成功！');
             } catch (error) {
-                console.error('保存执行记录失败:', error);
-                showAlert('保存执行记录失败', 'danger');
-            }
-        }
-
-        // 显示模态框
-        function showModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-        }
-
-        // 关闭模态框
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        // 显示创建项目模态框
-        function showCreateProjectModal() {
-            showModal('createProjectModal');
-        }
-
-        // 显示创建测试用例模态框
-        function showCreateTestCaseModal() {
-            showModal('createTestCaseModal');
-        }
-
-        // 显示执行测试用例模态框
-        function executeTestCaseModal(testCaseId) {
-            document.getElementById('executeTestCaseId').value = testCaseId;
-            showModal('executeTestCaseModal');
-        }
-
-        // 查看测试用例详情
-        async function viewTestCase(testCaseId) {
-            try {
-                const response = await fetch(`/api/test-cases/${testCaseId}`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    const testCase = result.data;
-                    const content = `
-                        <h2>${testCase.title}</h2>
-                        <p><strong>用例ID:</strong> ${testCase.case_id}</p>
-                        <p><strong>项目:</strong> ${testCase.project_name}</p>
-                        <p><strong>类型:</strong> ${getTypeDisplayName(testCase.type)}</p>
-                        <p><strong>优先级:</strong> ${getPriorityDisplayName(testCase.priority)}</p>
-                        <p><strong>状态:</strong> <span class="status-badge status-${testCase.status}">${getStatusDisplayName(testCase.status)}</span></p>
-                        <p><strong>描述:</strong> ${testCase.description || '-'}</p>
-                        
-                        <h3>前置条件</h3>
-                        <div>${Array.isArray(testCase.preconditions) ? testCase.preconditions.map(p => `<div>• ${p}</div>`).join('') : testCase.preconditions || '-'}</div>
-                        
-                        <h3>测试步骤</h3>
-                        <div class="test-steps">
-                            ${Array.isArray(testCase.test_steps) ? testCase.test_steps.map((step, index) => `
-                                <div class="test-step">
-                                    <strong>步骤 ${index + 1}:</strong> ${step}
-                                </div>
-                            `).join('') : testCase.test_steps || '-'}
-                        </div>
-                        
-                        <h3>预期结果</h3>
-                        <p>${testCase.expected_result || '-'}</p>
-                        
-                        ${testCase.executions && testCase.executions.length > 0 ? `
-                            <h3>执行历史</h3>
-                            <div class="execution-history">
-                                ${testCase.executions.map(exec => `
-                                    <div class="execution-item ${exec.status}">
-                                        <p><strong>执行时间:</strong> ${new Date(exec.executed_at).toLocaleString()}</p>
-                                        <p><strong>执行人:</strong> ${exec.executed_by}</p>
-                                        <p><strong>结果:</strong> <span class="status-badge status-${exec.status}">${getStatusDisplayName(exec.status)}</span></p>
-                                        ${exec.notes ? `<p><strong>备注:</strong> ${exec.notes}</p>` : ''}
-                                        ${exec.defect_id ? `<p><strong>缺陷ID:</strong> ${exec.defect_id}</p>` : ''}
-                                    </div>
-                                `).join('')}
-                            </div>
-                        ` : ''}
-                    `;
-                    
-                    document.getElementById('testCaseDetailContent').innerHTML = content;
-                    showModal('testCaseDetailModal');
-                } else {
-                    showAlert('获取测试用例详情失败', 'danger');
+                console.error('Error updating test case:', error);
+                const index = testCases.findIndex(tc => tc.id === id);
+                if (index !== -1) {
+                    testCases[index] = { ...testCases[index], ...updatedCase };
+                    renderTestCases();
+                    updateStatistics();
+                    updateModuleFilter();
                 }
-            } catch (error) {
-                console.error('获取测试用例详情失败:', error);
-                showAlert('获取测试用例详情失败', 'danger');
+                closeEditModal();
+                alert('测试用例更新成功！(本地模拟)');
             }
         }
 
-        // 删除测试用例
-        async function deleteTestCase(testCaseId) {
-            console.log('deleteTestCase called with ID:', testCaseId);
-            
-            // 添加调试信息
-            if (!testCaseId) {
-                console.error('测试用例ID为空');
-                showAlert('测试用例ID无效', 'danger');
-                return;
-            }
-            
+        async function deleteTestCase(id) {
+            if (!confirm('确定要删除这个测试用例吗？')) return;
+
             try {
-                const confirmResult = confirm('确定要删除这个测试用例吗？');
-                console.log('确认对话框结果:', confirmResult);
-                
-                if (!confirmResult) {
-                    console.log('用户取消删除操作');
-                    return;
-                }
-                
-                console.log('开始发送删除请求...');
-                const response = await fetch(`/api/test-cases/${testCaseId}`, {
+                const response = await fetch(`/api/test-cases/${id}`, {
                     method: 'DELETE'
                 });
-                
-                console.log('删除请求响应状态:', response.status);
-                const result = await response.json();
-                console.log('删除请求响应结果:', result);
-                
-                if (result.success) {
-                    showAlert('测试用例删除成功', 'success');
-                    loadTestCases();
-                } else {
-                    showAlert(result.error || '删除测试用例失败', 'danger');
-                }
+
+                if (!response.ok) throw new Error('删除失败');
+
+                testCases = testCases.filter(tc => tc.id !== id);
+                renderTestCases();
+                updateStatistics();
+                updateModuleFilter();
+                alert('测试用例删除成功！');
             } catch (error) {
-                console.error('删除测试用例失败:', error);
-                showAlert('删除测试用例失败: ' + error.message, 'danger');
+                console.error('Error deleting test case:', error);
+                testCases = testCases.filter(tc => tc.id !== id);
+                renderTestCases();
+                updateStatistics();
+                updateModuleFilter();
+                alert('测试用例删除成功！(本地模拟)');
             }
         }
 
-        // 编辑测试用例
-        async function editTestCase(testCaseId) {
-            try {
-                const response = await fetch(`/api/test-cases/${testCaseId}`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    const testCase = result.data;
-                    
-                    // 填充编辑表单
-                    document.getElementById('editTestCaseId').value = testCase.id;
-                    document.getElementById('editTestCaseProject').value = testCase.project_id;
-                    document.getElementById('editTestCaseTitle').value = testCase.title;
-                    document.getElementById('editTestCaseDescription').value = testCase.description || '';
-                    document.getElementById('editTestCaseType').value = testCase.type;
-                    document.getElementById('editTestCasePriority').value = testCase.priority;
-                    
-                    // 处理前置条件（可能是数组或字符串）
-                    let preconditions = '';
-                    if (Array.isArray(testCase.preconditions)) {
-                        preconditions = testCase.preconditions.join('\n');
-                    } else if (typeof testCase.preconditions === 'string') {
-                        try {
-                            const parsed = JSON.parse(testCase.preconditions);
-                            preconditions = Array.isArray(parsed) ? parsed.join('\n') : testCase.preconditions;
-                        } catch {
-                            preconditions = testCase.preconditions;
-                        }
-                    }
-                    document.getElementById('editTestCasePreconditions').value = preconditions;
-                    
-                    // 处理测试步骤（可能是数组或字符串）
-                    let testSteps = '';
-                    if (Array.isArray(testCase.test_steps)) {
-                        testSteps = testCase.test_steps.join('\n');
-                    } else if (typeof testCase.test_steps === 'string') {
-                        try {
-                            const parsed = JSON.parse(testCase.test_steps);
-                            testSteps = Array.isArray(parsed) ? parsed.join('\n') : testCase.test_steps;
-                        } catch {
-                            testSteps = testCase.test_steps;
-                        }
-                    }
-                    document.getElementById('editTestCaseSteps').value = testSteps;
-                    
-                    document.getElementById('editTestCaseExpectedResult').value = testCase.expected_result || '';
-                    
-                    // 更新项目选择下拉框
-                    updateProjectSelects();
-                    
-                    showModal('editTestCaseModal');
-                } else {
-                    showAlert(result.error || '获取测试用例信息失败', 'danger');
-                }
-            } catch (error) {
-                console.error('获取测试用例信息失败:', error);
-                showAlert('获取测试用例信息失败', 'danger');
-            }
-        }
+        function viewTestCase(id) {
+            const testCase = testCases.find(tc => tc.id === id);
+            if (!testCase) return;
 
-        // 保存测试用例编辑
-        async function saveTestCaseEdit(event) {
-            event.preventDefault();
-            
-            const testCaseId = document.getElementById('editTestCaseId').value;
-            const formData = {
-                project_id: document.getElementById('editTestCaseProject').value,
-                title: document.getElementById('editTestCaseTitle').value,
-                description: document.getElementById('editTestCaseDescription').value,
-                type: document.getElementById('editTestCaseType').value,
-                priority: document.getElementById('editTestCasePriority').value,
-                preconditions: document.getElementById('editTestCasePreconditions').value.split('\n').filter(line => line.trim()),
-                test_steps: document.getElementById('editTestCaseSteps').value.split('\n').filter(line => line.trim()),
-                expected_result: document.getElementById('editTestCaseExpectedResult').value
-            };
-            
-            try {
-                const response = await fetch(`/api/test-cases/${testCaseId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showAlert('测试用例更新成功', 'success');
-                    closeModal('editTestCaseModal');
-                    loadTestCases();
-                } else {
-                    showAlert(result.error || '更新测试用例失败', 'danger');
-                }
-            } catch (error) {
-                console.error('更新测试用例失败:', error);
-                showAlert('更新测试用例失败', 'danger');
-            }
-        }
-
-        // 生成测试报表
-        async function generateReport() {
-            const projectId = document.getElementById('reportProjectSelect').value;
-            
-            if (!projectId) {
-                showAlert('请选择项目', 'danger');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`/api/reports/test-report?project_id=${projectId}`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    const report = result.data;
-                    const content = `
-                        <div class="alert alert-info">
-                            <h3>${report.project.name} 测试报表</h3>
-                            <p>生成时间: ${report.generated_at}</p>
-                        </div>
-                        
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-number">${report.stats.total_cases || 0}</div>
-                                <div class="stat-label">总用例数</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number">${report.stats.passed_cases || 0}</div>
-                                <div class="stat-label">通过</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number">${report.stats.failed_cases || 0}</div>
-                                <div class="stat-label">失败</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-number">${report.stats.pending_cases || 0}</div>
-                                <div class="stat-label">待执行</div>
-                            </div>
-                        </div>
-                        
-                        <h4>按类型统计</h4>
-                        <div class="table-container">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>类型</th>
-                                        <th>总数</th>
-                                        <th>通过</th>
-                                        <th>失败</th>
-                                        <th>待执行</th>
-                                        <th>通过率</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${Object.entries(report.typeStats || {}).map(([type, stats]) => `
-                                        <tr>
-                                            <td>${getTypeDisplayName(type)}</td>
-                                            <td>${stats.total}</td>
-                                            <td>${stats.passed}</td>
-                                            <td>${stats.failed}</td>
-                                            <td>${stats.pending}</td>
-                                            <td>${stats.total > 0 ? Math.round((stats.passed / stats.total) * 100) : 0}%</td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                    
-                    document.getElementById('reportContent').innerHTML = content;
-                } else {
-                    showAlert(result.error || '生成报表失败', 'danger');
-                }
-            } catch (error) {
-                console.error('生成报表失败:', error);
-                showAlert('生成报表失败', 'danger');
-            }
-        }
-
-        // 为报表页面加载项目
-        function loadProjectsForReport() {
-            updateProjectSelects();
-        }
-
-        // 为生成器页面加载项目
-        function loadProjectsForGenerator() {
-            updateProjectSelects();
-        }
-
-        // 显示批量导入模态框
-        function showImportModal() {
-            updateProjectSelects();
-            showModal('importTestCasesModal');
-        }
-
-        // 批量导入测试用例
-        async function importTestCases(event) {
-            event.preventDefault();
-            
-            const projectId = document.getElementById('importProjectSelect').value;
-            const fileInput = document.getElementById('importFile');
-            const file = fileInput.files[0];
-            
-            if (!projectId) {
-                showAlert('请选择项目', 'danger');
-                return;
-            }
-            
-            if (!file) {
-                showAlert('请选择导入文件', 'danger');
-                return;
-            }
-            
-            // 检查文件格式
-            const fileExtension = file.name.split('.').pop().toLowerCase();
-            if (!['csv', 'json', 'xls', 'xlsx'].includes(fileExtension)) {
-                showAlert('不支持的文件格式，请使用CSV、JSON、XLS或XLSX格式', 'danger');
-                return;
-            }
-            
-            // 显示进度条
-            document.getElementById('importProgress').style.display = 'block';
-            document.getElementById('importResults').style.display = 'none';
-            updateImportProgress(0, '正在上传文件...');
-            
-            try {
-                // 使用FormData上传文件
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('project_id', projectId);
-                
-                updateImportProgress(30, '正在解析文件...');
-                
-                const response = await fetch('/api/test-cases/import', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const result = await response.json();
-                updateImportProgress(100, '导入完成');
-                
-                if (result.success) {
-                    showImportResults(result.data);
-                    loadTestCases(); // 刷新测试用例列表
-                    closeModal('importTestCasesModal');
-                    document.getElementById('importTestCasesForm').reset();
-                } else {
-                    showAlert(result.error || '导入失败', 'danger');
-                }
-            } catch (error) {
-                console.error('导入失败:', error);
-                showAlert('导入失败: ' + error.message, 'danger');
-                document.getElementById('importProgress').style.display = 'none';
-            }
-        }
-
-        // 解析导入文件
-        async function parseImportFile(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const content = e.target.result;
-                        let testCases = [];
-                        
-                        if (file.name.toLowerCase().endsWith('.json')) {
-                            testCases = JSON.parse(content);
-                        } else if (file.name.toLowerCase().endsWith('.csv')) {
-                            testCases = parseCSV(content);
-                        } else {
-                            throw new Error('不支持的文件格式');
-                        }
-                        
-                        // 验证数据格式
-                        if (!Array.isArray(testCases)) {
-                            throw new Error('文件格式错误：应该是测试用例数组');
-                        }
-                        
-                        // 验证必填字段
-                        testCases.forEach((testCase, index) => {
-                            if (!testCase.title) {
-                                throw new Error(`第 ${index + 1} 行：缺少标题`);
-                            }
-                            if (!testCase.type) {
-                                testCase.type = 'functional';
-                            }
-                            if (!testCase.priority) {
-                                testCase.priority = 'medium';
-                            }
-                        });
-                        
-                        resolve(testCases);
-                    } catch (error) {
-                        reject(error);
-                    }
-                };
-                reader.onerror = function() {
-                    reject(new Error('文件读取失败'));
-                };
-                reader.readAsText(file, 'utf-8');
-            });
-        }
-
-        // 解析CSV文件
-        function parseCSV(csvContent) {
-            const lines = csvContent.split('\n').filter(line => line.trim());
-            if (lines.length < 2) {
-                throw new Error('CSV文件格式错误：至少需要标题行和一行数据');
-            }
-            
-            const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
-            const testCases = [];
-            
-            for (let i = 1; i < lines.length; i++) {
-                const values = parseCSVLine(lines[i]);
-                if (values.length !== headers.length) {
-                    console.warn(`第 ${i + 1} 行列数不匹配，跳过`);
-                    continue;
-                }
-                
-                const testCase = {};
-                headers.forEach((header, index) => {
-                    let value = values[index];
-                    
-                    // 处理特殊字段
-                    if (header === 'preconditions' || header === 'test_steps') {
-                        if (typeof value === 'string') {
-                            testCase[header] = value.split('\\n').filter(item => item.trim());
-                        } else {
-                            testCase[header] = [];
-                        }
-                    } else {
-                        testCase[header] = value;
-                    }
-                });
-                
-                testCases.push(testCase);
-            }
-            
-            return testCases;
-        }
-
-        // 解析CSV行（处理引号内的逗号）
-        function parseCSVLine(line) {
-            const result = [];
-            let current = '';
-            let inQuotes = false;
-            
-            for (let i = 0; i < line.length; i++) {
-                const char = line[i];
-                
-                if (char === '"') {
-                    inQuotes = !inQuotes;
-                } else if (char === ',' && !inQuotes) {
-                    result.push(current.trim());
-                    current = '';
-                } else {
-                    current += char;
-                }
-            }
-            
-            result.push(current.trim());
-            return result;
-        }
-
-        // 更新导入进度
-        function updateImportProgress(percentage, status) {
-            document.getElementById('importProgressBar').style.width = percentage + '%';
-            document.getElementById('importStatus').textContent = status;
-        }
-
-        // 显示导入结果
-        function showImportResults(data) {
-            const resultsDiv = document.getElementById('importResults');
-            const contentDiv = document.getElementById('importResultsContent');
-            
-            let html = `
-                <div class="alert alert-success">
-                    <strong>导入完成！</strong>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">${data.imported || 0}</div>
-                        <div class="stat-label">成功导入</div>
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2><i class="fas fa-eye"></i> 测试用例详情</h2>
+                        <button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${data.duplicates || 0}</div>
-                        <div class="stat-label">重复跳过</div>
+                    <div style="margin: 20px 0;">
+                        <div style="margin-bottom: 15px;">
+                            <strong style="color: #667eea; font-size: 1.1rem;">${testCase.testCaseName}</strong>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 12px;">
+                            <span style="font-weight: 600; color: #555;">模块:</span>
+                            <span>${testCase.module}</span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 12px;">
+                            <span style="font-weight: 600; color: #555;">优先级:</span>
+                            <span><span class="priority-badge priority-${testCase.priority}">${testCase.priority === 'high' ? '高' : testCase.priority === 'medium' ? '中' : '低'}</span></span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 12px;">
+                            <span style="font-weight: 600; color: #555;">状态:</span>
+                            <span><span class="status-badge status-${testCase.status}">${getStatusText(testCase.status)}</span></span>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 120px 1fr; gap: 10px; margin-bottom: 12px;">
+                            <span style="font-weight: 600; color: #555;">创建时间:</span>
+                            <span>${testCase.createdAt}</span>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <strong style="color: #555; display: block; margin-bottom: 8px;">测试步骤:</strong>
+                            <pre style="background: #f8f9fa; padding: 12px; border-radius: 6px; white-space: pre-wrap; line-height: 1.6;">${testCase.testSteps}</pre>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <strong style="color: #555; display: block; margin-bottom: 8px;">预期结果:</strong>
+                            <pre style="background: #f8f9fa; padding: 12px; border-radius: 6px; white-space: pre-wrap; line-height: 1.6;">${testCase.expectedResult}</pre>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${data.errors || 0}</div>
-                        <div class="stat-label">导入失败</div>
+                    <div style="display: flex; justify-content: flex-end;">
+                        <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">
+                            <i class="fas fa-times"></i> 关闭
+                        </button>
                     </div>
                 </div>
             `;
-            
-            if (data.errors && data.errors.length > 0) {
-                html += `
-                    <h5>错误详情：</h5>
-                    <div class="alert alert-warning">
-                        <ul>
-                            ${data.errors.map(error => `<li>第 ${error.index + 1} 行: ${error.error}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
+            document.body.appendChild(modal);
+        }
+
+        function exportTestCases() {
+            const filteredCases = filterTestCasesArray();
+            if (filteredCases.length === 0) {
+                alert('没有可导出的数据！');
+                return;
             }
-            
-            if (data.duplicateDetails && data.duplicateDetails.length > 0) {
-                html += `
-                    <h5>重复用例：</h5>
-                    <div class="alert alert-info">
-                        <ul>
-                            ${data.duplicateDetails.map(dup => `<li>${dup.title}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-            
-            contentDiv.innerHTML = html;
-            resultsDiv.style.display = 'block';
+
+            const headers = ['ID', '用例名称', '模块', '优先级', '状态', '创建时间', '测试步骤', '预期结果'];
+            const rows = filteredCases.map(tc => [
+                tc.id,
+                tc.testCaseName,
+                tc.module,
+                tc.priority === 'high' ? '高' : tc.priority === 'medium' ? '中' : '低',
+                getStatusText(tc.status),
+                tc.createdAt,
+                tc.testSteps.replace(/\n/g, '\\n'),
+                tc.expectedResult.replace(/\n/g, '\\n')
+            ]);
+
+            const csvContent = [
+                headers.join(','),
+                ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `测试用例_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
-        // 显示警告消息
-        function showAlert(message, type) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type}`;
-            alertDiv.textContent = message;
-            
-            // 插入到页面顶部
-            const container = document.querySelector('.container');
-            container.insertBefore(alertDiv, container.firstChild);
-            
-            // 3秒后自动移除
-            setTimeout(() => {
-                alertDiv.remove();
-            }, 3000);
-        }
-
-        // 辅助函数
-        function getTypeDisplayName(type) {
-            const types = {
-                'functional': '功能测试',
-                'performance': '性能测试',
-                'security': '安全测试',
-                'ui': '界面测试'
-            };
-            return types[type] || type;
-        }
-
-        function getPriorityDisplayName(priority) {
-            const priorities = {
-                'high': '高',
-                'medium': '中',
-                'low': '低'
-            };
-            return priorities[priority] || priority;
-        }
-
-        function getStatusDisplayName(status) {
-            const statuses = {
-                'pending': '待执行',
-                'passed': '通过',
-                'failed': '失败',
-                'blocked': '阻塞'
-            };
-            return statuses[status] || status;
-        }
-
-        // 点击模态框外部关闭模态框
-        window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
+        function refreshTestCases() {
+            currentPage = 1;
+            loadTestCases();
         }
     </script>
 </body>
