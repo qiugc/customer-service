@@ -7,14 +7,16 @@ const DocumentParser = require('./src/documentParser');
 const TestCaseGenerator = require('./src/testCaseGenerator');
 const ReportGenerator = require('./src/reportGenerator');
 const Database = require('./src/database');
-const TestCaseController = require('./src/testCaseController');
+const TestController = require('./src/TestController');
+const config = require('./config');
+const { errorHandler } = require('./src/utils/errors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = config.port || 3000;
 
 // 初始化数据库
 const database = new Database();
-const testCaseController = new TestCaseController(database);
+const testController = new TestController(database);
 
 // 中间件配置
 app.use(cors());
@@ -82,22 +84,26 @@ app.get('/', (req, res) => {
 });
 
 // 项目管理API
-app.post('/api/projects', (req, res) => testCaseController.createProject(req, res));
-app.get('/api/projects', (req, res) => testCaseController.getProjects(req, res));
-app.get('/api/projects/:id', (req, res) => testCaseController.getProject(req, res));
-app.put('/api/projects/:id', (req, res) => testCaseController.updateProject(req, res));
-app.delete('/api/projects/:id', (req, res) => testCaseController.deleteProject(req, res));
+app.post('/api/projects', testController.createProject);
+app.get('/api/projects', testController.getProjects);
+app.get('/api/projects/:id', testController.getProject);
+app.put('/api/projects/:id', testController.updateProject);
+app.delete('/api/projects/:id', testController.deleteProject);
+app.get('/api/projects/:id/stats', testController.getProjectStats);
 
 // 测试用例管理API
-app.post('/api/test-cases', (req, res) => testCaseController.createTestCase(req, res));
-app.get('/api/test-cases', (req, res) => testCaseController.getTestCases(req, res));
-app.get('/api/test-cases/:id', (req, res) => testCaseController.getTestCase(req, res));
-app.put('/api/test-cases/:id', (req, res) => testCaseController.updateTestCase(req, res));
-app.delete('/api/test-cases/:id', (req, res) => testCaseController.deleteTestCase(req, res));
+app.post('/api/test-cases', testController.createTestCase);
+app.get('/api/test-cases', testController.getTestCases);
+app.get('/api/test-cases/:id', testController.getTestCase);
+app.put('/api/test-cases/:id', testController.updateTestCase);
+app.delete('/api/test-cases/:id', testController.deleteTestCase);
+app.post('/api/test-cases/import', testController.batchImportTestCases);
+app.post('/api/test-cases/generate', testController.generateTestCases);
 
 // 测试执行API
-app.post('/api/test-cases/:id/execute', (req, res) => testCaseController.executeTestCase(req, res));
-app.get('/api/test-cases/:id/executions', (req, res) => testCaseController.getTestExecutions(req, res));
+app.post('/api/test-cases/:id/execute', testController.executeTestCase);
+app.get('/api/test-cases/:id/executions', testController.getTestExecutions);
+app.get('/api/execution-history/:projectId', testController.getExecutionHistory);
 
 // 批量导入API（支持文件上传）
 app.post('/api/test-cases/import', importUpload.single('file'), (req, res) => testCaseController.importTestCases(req, res));
@@ -230,16 +236,7 @@ app.get('/api/template', (req, res) => {
 });
 
 // 错误处理中间件
-app.use((error, req, res, next) => {
-  if (error instanceof multer.MulterError) {
-    if (error.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({ error: '文件大小超过限制（最大10MB）' });
-    }
-  }
-  
-  console.error('服务器错误:', error);
-  res.status(500).json({ error: '服务器内部错误' });
-});
+app.use(errorHandler);
 
 // 启动服务器
 async function startServer() {
