@@ -142,6 +142,59 @@
             background-clip: text;
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 50px;
+            height: 25px;
+            background: #ddd;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0 5px;
+            position: relative;
+        }
+
+        .mode-toggle.dark-mode {
+            background: #333;
+        }
+
+        .mode-toggle::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            top: 50%;
+            left: 3px;
+            transform: translateY(-50%);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .mode-toggle.dark-mode::before {
+            left: calc(100% - 23px);
+            background: #667eea;
+        }
+
+        .mode-toggle i {
+            color: #666;
+            font-size: 0.8rem;
+            z-index: 1;
+        }
+
+        .mode-toggle.dark-mode i {
+            color: #fff;
+        }
+
         .nav-buttons {
             display: flex;
             gap: 15px;
@@ -654,6 +707,302 @@
             cursor: not-allowed;
         }
 
+        .page-btn {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            background: white;
+            color: #667eea;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover:not(:disabled) {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .logo h1 {
+                font-size: 1.4rem;
+            }
+
+            .control-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .test-cases-table {
+                font-size: 0.85rem;
+            }
+
+            .test-cases-table th,
+            .test-cases-table td {
+                padding: 12px 8px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-small {
+                width: 100%;
+            }
+        }
+
+        /* 深色模式样式 */
+        .dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+        }
+
+        .dark-mode .bg-grid {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        }
+
+        .dark-mode .floating-element {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .dark-mode header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-mode .logo h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dark-mode .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .dark-mode .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .dark-mode .stat-card {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-mode .stat-number {
+            color: #fff;
+        }
+
+        .dark-mode .stat-label {
+            color: #ccc;
+        }
+
+        .dark-mode .control-bar {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-mode .search-box input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .dark-mode .search-box input::placeholder {
+            color: #ccc;
+        }
+
+        .dark-mode .search-box input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .dark-mode .filter-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .dark-mode .filter-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .dark-mode .filter-select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .dark-mode .table-container {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-mode .test-cases-table th {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .dark-mode .test-cases-table td {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .dark-mode .test-cases-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .dark-mode .status-badge.status-pass {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+
+        .dark-mode .status-badge.status-fail {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+        }
+
+        .dark-mode .status-badge.status-pending {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+        }
+
+        .dark-mode .btn-success {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+        }
+
+        .dark-mode .btn-success:hover {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .dark-mode .btn-danger {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+
+        .dark-mode .btn-danger:hover {
+            background: #f44336;
+            color: white;
+        }
+
+        .dark-mode .modal {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .dark-mode .modal-content {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode .modal-header {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dark-mode .modal-header h2 {
+            color: #fff;
+        }
+
+        .dark-mode .close-btn {
+            color: #ccc;
+        }
+
+        .dark-mode .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .dark-mode .form-group label {
+            color: #ccc;
+        }
+
+        .dark-mode .form-group input,
+        .dark-mode .form-group textarea,
+        .dark-mode .form-group select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .dark-mode .form-group input::placeholder,
+        .dark-mode .form-group textarea::placeholder {
+            color: #999;
+        }
+
+        .dark-mode .form-group input:focus,
+        .dark-mode .form-group textarea:focus,
+        .dark-mode .form-group select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .dark-mode .form-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .dark-mode .no-data {
+            color: #ccc;
+        }
+
+        .dark-mode pre {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .dark-mode .page-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #667eea;
+        }
+
+        .dark-mode .page-btn:hover:not(:disabled) {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .dark-mode .page-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .dark-mode .page-btn:disabled {
+            opacity: 0.3;
+        }
+
+
+
+        /* 响应式设计 */
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -715,13 +1064,19 @@
                 <i class="fas fa-database"></i>
                 <h1>测试用例管理系统</h1>
             </div>
-            <div class="nav-buttons">
-                <a href="index.html" class="btn btn-secondary">
-                    <i class="fas fa-magic"></i> 生成器
-                </a>
-                <button class="btn btn-primary" onclick="openAddModal()">
-                    <i class="fas fa-plus"></i> 新增用例
-                </button>
+            <div class="header-actions">
+                <div class="mode-toggle" id="modeToggle">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="nav-buttons">
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-magic"></i> 生成器
+                    </a>
+                    <button class="btn btn-primary" onclick="openAddModal()">
+                        <i class="fas fa-plus"></i> 新增用例
+                    </button>
+                </div>
             </div>
         </header>
 
@@ -1355,6 +1710,27 @@
             currentPage = 1;
             loadTestCases();
         }
+
+        // 模式切换功能
+        const modeToggle = document.getElementById('modeToggle');
+        const body = document.body;
+
+        // 检查本地存储中的模式设置
+        const savedMode = localStorage.getItem('mode');
+        if (savedMode === 'dark') {
+            body.classList.add('dark-mode');
+            modeToggle.classList.add('dark-mode');
+        }
+
+        // 切换模式
+        modeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            modeToggle.classList.toggle('dark-mode');
+            
+            // 保存模式设置到本地存储
+            const currentMode = body.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('mode', currentMode);
+        });
     </script>
 </body>
 </html>
